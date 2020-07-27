@@ -27,6 +27,7 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
     if (jsonString != null) {
       return Future.value(NumberTriviaModel.fromJson(json.decode(jsonString)));
     } else {
+      print('miji');
       throw CacheException();
     }
   }
@@ -37,4 +38,3 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
         CACHED_NUMBER_TRIVIA, json.encode(triviaToCache.toJson()));
   }
 }
-// hole motherfucker

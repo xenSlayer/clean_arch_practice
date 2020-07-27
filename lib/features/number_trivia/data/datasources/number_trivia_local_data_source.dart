@@ -27,7 +27,7 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
     if (jsonString != null) {
       return Future.value(NumberTriviaModel.fromJson(json.decode(jsonString)));
     } else {
-      print('miji');
+      print('miji lado');
       throw CacheException();
     }
   }

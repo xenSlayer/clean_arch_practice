@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:clean_arch/core/error/exceptions.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart';
+import 'package:meta/meta.dart';
 
+import '../../../../core/error/exceptions.dart';
 import '../models/number_trivia_model.dart';
 
 abstract class NumberTriviaRemoteDataSource {

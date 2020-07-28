@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:clean_arch/core/error/exceptions.dart';
 import 'package:clean_arch/features/number_trivia/data/datasources/number_trivia_remote_data_source.dart';
 import 'package:clean_arch/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,15 +28,36 @@ void main() {
       when(mockHttpClient.get(any, headers: anyNamed('headers')))
           .thenAnswer((_) async => http.Response(fixture('trivia.json'), 200));
       //act
-      final NumberTriviaModel result =
-          await dataSource.getConcreteNumberTrivia(tNumber);
+      await dataSource.getConcreteNumberTrivia(tNumber);
       // assert
       verifyNever(mockHttpClient.get('http://numbersapi.com/$tNumber',
           headers: {'Content-Type': 'application/json'}));
+    });
+
+    test('should return NumberTrivia when the response code is 200(success)',
+        () async {
+      // arrange
+      when(mockHttpClient.get(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => http.Response(fixture('trivia.json'), 200));
+      //act
+      final NumberTriviaModel result =
+          await dataSource.getConcreteNumberTrivia(tNumber);
+      // assert
       expect(
           result,
           equals(
               NumberTriviaModel.fromJson(json.decode(fixture('trivia.json')))));
+    });
+
+    test('should throw a server exception when the response code is not 200',
+        () async {
+      // arrange
+      when(mockHttpClient.get(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => http.Response('Something went wrong', 404));
+      //act
+      final Function call = dataSource.getConcreteNumberTrivia;
+      // assert
+      expect(() => call(tNumber), throwsA(isInstanceOf<ServerException>()));
     });
   });
 }

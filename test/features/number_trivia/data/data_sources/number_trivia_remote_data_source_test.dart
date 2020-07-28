@@ -19,14 +19,23 @@ void main() {
     dataSource = NumberTriviaRemoteDataSourceImpl(client: mockHttpClient);
   });
 
+  void setupMockHttpClientSuccess200() {
+    when(mockHttpClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response(fixture('trivia.json'), 200));
+  }
+
+  void setupMockHttpClientFailure400() {
+    when(mockHttpClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response('Something went wrong', 404));
+  }
+
   group('get concrete number trivia from remote data source', () {
     final int tNumber = 1;
     test(
         'should perform a GET request on URL with number being the endpoint and with application/json header',
         () async {
       // arrange
-      when(mockHttpClient.get(any, headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response(fixture('trivia.json'), 200));
+      setupMockHttpClientSuccess200();
       //act
       await dataSource.getConcreteNumberTrivia(tNumber);
       // assert
@@ -37,8 +46,7 @@ void main() {
     test('should return NumberTrivia when the response code is 200(success)',
         () async {
       // arrange
-      when(mockHttpClient.get(any, headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response(fixture('trivia.json'), 200));
+      setupMockHttpClientSuccess200();
       //act
       final NumberTriviaModel result =
           await dataSource.getConcreteNumberTrivia(tNumber);
@@ -52,12 +60,50 @@ void main() {
     test('should throw a server exception when the response code is not 200',
         () async {
       // arrange
-      when(mockHttpClient.get(any, headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response('Something went wrong', 404));
+      setupMockHttpClientFailure400();
       //act
       final Function call = dataSource.getConcreteNumberTrivia;
       // assert
       expect(() => call(tNumber), throwsA(isInstanceOf<ServerException>()));
+    });
+  });
+
+  // Random Number Trivia test
+
+  group('get random number trivia from remote data source', () {
+    test(
+        'should perform a GET request on URL with number being the endpoint and with application/json header',
+        () async {
+      // arrange
+      setupMockHttpClientSuccess200();
+      //act
+      await dataSource.getRandomNumberTrivia();
+      // assert
+      verifyNever(mockHttpClient.get('http://numbersapi.com/random',
+          headers: {'Content-Type': 'application/json'}));
+    });
+
+    test('should return NumberTrivia when the response code is 200(success)',
+        () async {
+      // arrange
+      setupMockHttpClientSuccess200();
+      //act
+      final NumberTriviaModel result = await dataSource.getRandomNumberTrivia();
+      // assert
+      expect(
+          result,
+          equals(
+              NumberTriviaModel.fromJson(json.decode(fixture('trivia.json')))));
+    });
+
+    test('should throw a server exception when the response code is not 200',
+        () async {
+      // arrange
+      setupMockHttpClientFailure400();
+      //act
+      final Function call = dataSource.getRandomNumberTrivia;
+      // assert
+      expect(() => call(), throwsA(isInstanceOf<ServerException>()));
     });
   });
 }

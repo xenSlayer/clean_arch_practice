@@ -37,6 +37,7 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
       return NumberTriviaModel.fromJson(json.decode(response.body));
     } else {
       throw (ServerException());
+      print('hello');
     }
   }
 }

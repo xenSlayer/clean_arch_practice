@@ -19,6 +19,7 @@ void main() {
   MockGetConcreteNumberTrivia mockGetConcreteNumberTrivia;
   MockGetRandomNumberTrivia mockGetRandomNumberTrivia;
   MockInputConverter mockInputConverter;
+
   setUp(() {
     mockGetConcreteNumberTrivia = MockGetConcreteNumberTrivia();
     mockGetRandomNumberTrivia = MockGetRandomNumberTrivia();

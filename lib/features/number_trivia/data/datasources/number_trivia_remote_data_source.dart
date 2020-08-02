@@ -24,11 +24,11 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   NumberTriviaRemoteDataSourceImpl({@required this.client});
   @override
   Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async =>
-      await _getTriviaFromUrl(url: 'https://numbersapi.com/$number');
+      await _getTriviaFromUrl(url: 'http://numbersapi.com/$number');
 
   @override
   Future<NumberTriviaModel> getRandomNumberTrivia() async =>
-      await _getTriviaFromUrl(url: 'https://numbersapi.com/random');
+      await _getTriviaFromUrl(url: 'http://numbersapi.com/random');
 
   Future<NumberTriviaModel> _getTriviaFromUrl({@required String url}) async {
     final Response response =

@@ -16,7 +16,6 @@ class NumberTriviaPage extends StatelessWidget {
 
   BlocProvider<NumberTriviaBloc> buildBody(Size size) {
     TextEditingController controller = TextEditingController();
-    // ignore: close_sinks
 
     return BlocProvider<NumberTriviaBloc>(
         create: (_) => sl<NumberTriviaBloc>(),

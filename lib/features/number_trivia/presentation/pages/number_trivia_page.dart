@@ -1,8 +1,8 @@
-import '../../domain/entities/number_trivia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../injection_container.dart';
+import '../../domain/entities/number_trivia.dart';
 import '../bloc/number_trivia_bloc.dart';
 
 class NumberTriviaPage extends StatelessWidget {
@@ -26,8 +26,8 @@ class NumberTriviaPage extends StatelessWidget {
               if (state is EmptyState) {
                 return Container(
                   width: size.width,
-                  height: 500,
-                  color: Colors.amber,
+                  height: 120,
+                  color: Colors.white,
                   child: Center(child: Text("EMPTY STATE")),
                 );
               } else if (state is LoadedState) {
@@ -63,17 +63,25 @@ class TriviaController extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FlatButton.icon(
+              color: Colors.green,
                 onPressed: () => BlocProvider.of<NumberTriviaBloc>(context)
                     .add(GetTriviaForRandomNumber()),
                 icon: Icon(Icons.text_rotation_down),
                 label: Text('Random Trivia')),
             FlatButton.icon(
+              color: Colors.pink,
                 onPressed: () => BlocProvider.of<NumberTriviaBloc>(context).add(
                     GetTriviaForConcreteNumber(numberString: controller.text)),
                 icon: Icon(Icons.format_list_numbered_rtl),
                 label: Text('Number Trivia'))
           ],
-        )
+        ),
+        FlatButton.icon(
+          color: Colors.amber,
+            onPressed: () => BlocProvider.of<NumberTriviaBloc>(context)
+                .add(GetTriviaForRandomNumber()),
+            icon: Icon(Icons.restore),
+            label: Text('Reset'))
       ],
     );
   }
@@ -151,10 +159,10 @@ class ErrorLoading extends StatelessWidget {
                 child: Icon(
               Icons.sentiment_very_dissatisfied,
               size: 120,
-              color: Colors.grey,
+              color: Colors.red,
             )),
           ),
-          Text(message)
+          Text(message, style: TextStyle(color: Colors.red))
         ],
       ),
     );

@@ -39,7 +39,7 @@ void main() {
       //act
       await dataSource.getConcreteNumberTrivia(tNumber);
       // assert
-      verifyNever(mockHttpClient.get('http://numbersapi.com/$tNumber',
+      verify(mockHttpClient.get('http://numbersapi.com/$tNumber',
           headers: {'Content-Type': 'application/json'}));
     });
 
@@ -79,7 +79,7 @@ void main() {
       //act
       await dataSource.getRandomNumberTrivia();
       // assert
-      verifyNever(mockHttpClient.get('http://numbersapi.com/random',
+      verify(mockHttpClient.get('http://numbersapi.com/random',
           headers: {'Content-Type': 'application/json'}));
     });
 
